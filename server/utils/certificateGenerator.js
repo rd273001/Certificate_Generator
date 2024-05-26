@@ -1,6 +1,8 @@
-const { PDFDocument, rgb } = require( 'pdf-lib' );
+const { PDFDocument, cmyk, StandardFonts } = require( 'pdf-lib' );
+const fontkit = require( '@pdf-lib/fontkit' );
 const fs = require( 'fs' );
 const { google } = require( 'googleapis' );
+const { formattedDate } = require( './formattedDate' );
 require( 'dotenv' ).config();
 
 // Configure the Google Drive API credentials
@@ -22,18 +24,31 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.load( templateBytes );
     // Get the content of certificate template PDF
-    const page = pdfDoc.getPage(0);
+    const page = pdfDoc.getPage( 0 );
+    
+    // Get the width and height of the first page
+    const { width, height } = page.getSize();
 
-    page.drawText( `${ name }`, { x: 500, y: 3000, size: 35, color: rgb( 0.255, 0.189, 0.69 ) } );
-    page.drawText( `\nFor successfully completing the ${ course }\ncourse on ${ approvalDate }.`, { x: 500, y: 3000, size: 12 } );
+    pdfDoc.registerFontkit( fontkit );
+    const font1Url = 'https://www.1001fonts.com/download/font/vollkorn.semibold.ttf';
+    const font1Bytes = await fetch( font1Url ).then( res => res.arrayBuffer() );
+    const font1 = await pdfDoc.embedFont( font1Bytes );
+    const font2Url = 'https://www.1001fonts.com/download/font/roboto.medium.ttf';
+    const font2Bytes = await fetch( font2Url ).then( res => res.arrayBuffer() );
+    const font2 = await pdfDoc.embedFont( font2Bytes );
+    const text1 = name;
+    const text2 = `For successfully completing the ${ course }`;
+    const text3 = `course on ${ formattedDate( approvalDate ) }.`;
+    const widthOfText1 = font1.widthOfTextAtSize( text1, 44 );
+    const widthOfText2 = font2.widthOfTextAtSize( text2, 18 );
+    const widthOfText3 = font2.widthOfTextAtSize( text3, 18 );
 
-    // Change font size and color for the name
-    // page.drawText( name, {
-    //   x: 100,
-    //   y: 500 - nameIndex * 12, // Adjust Y position based on the position of the name
-    //   size: 30, // Font size
-    // //   color: rgb( 255, 189, 69 ), // Mustard yellow color
-    // } );
+    page.moveTo( ( width / 2 ) - ( widthOfText1 / 2 ), height / 1.61 );
+    page.drawText( `${ name }`, { size: 44, color: cmyk( 0.00, 0.28, 0.89, 0.11 ), font: font1 } );
+    page.moveTo( ( width / 2 ) - ( widthOfText2 / 2 ), height / 1.61 - 43.1 );
+    page.drawText( text2, { size: 17.8, font: font2 } );
+    page.moveTo( ( width / 2 ) - ( widthOfText3 / 2 ), height / 1.61 - ( 44 + 17.8 + 10 ) );
+    page.drawText( text3, { size: 17.8, font: font2 } );
 
     // Save the modified PDF
     const modifiedPdfBytes = await pdfDoc.save();
