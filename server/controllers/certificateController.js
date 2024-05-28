@@ -60,7 +60,7 @@ exports.generateCertificate = async ( req, res ) => {
       return res.status( 404 ).json( { error: 'Failed to update certificate!' } );
     }
 
-    res.status( 201 ).json( 'Certificate generated successfully.' );
+    res.status( 201 ).json( { message: 'Certificate generated successfully.', certificateLink } );
   } catch ( error ) {
     res.status( 500 ).json( { error: 'Failed to create certificate!' } );
   }

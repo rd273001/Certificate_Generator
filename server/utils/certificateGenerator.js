@@ -1,9 +1,25 @@
-const { PDFDocument, cmyk, StandardFonts } = require( 'pdf-lib' );
+const { PDFDocument, cmyk } = require( 'pdf-lib' );
 const fontkit = require( '@pdf-lib/fontkit' );
 const fs = require( 'fs' );
 const { google } = require( 'googleapis' );
 const { formattedDate } = require( './formattedDate' );
 require( 'dotenv' ).config();
+
+const fontUrls = [
+  'https://www.1001fonts.com/download/font/vollkorn.semibold.ttf',
+  'https://www.1001fonts.com/download/font/roboto.medium.ttf',
+];
+
+// function to fetch and embed fonts concurrently using Promise.all()
+const fetchAndEmbedFonts = async ( pdfDoc ) => {
+  const [font1Bytes, font2Bytes] = await Promise.all(
+    fontUrls.map( ( url ) => fetch( url ).then( ( res ) => res.arrayBuffer() ) )
+  );
+  const [font1, font2] = await Promise.all(
+    [font1Bytes, font2Bytes].map( ( bytes ) => pdfDoc.embedFont( bytes ) )
+  );
+  return { font1, font2 };
+};
 
 // Configure the Google Drive API credentials
 // console.log( 'Private KEY  =>  ', process.env.GOOGLE_PRIVATE_KEY.replace( /\\n/g, '\n' ) );
@@ -30,15 +46,15 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     const { width, height } = page.getSize();
 
     pdfDoc.registerFontkit( fontkit );
-    const font1Url = 'https://www.1001fonts.com/download/font/vollkorn.semibold.ttf';
-    const font1Bytes = await fetch( font1Url ).then( res => res.arrayBuffer() );
-    const font1 = await pdfDoc.embedFont( font1Bytes );
-    const font2Url = 'https://www.1001fonts.com/download/font/roboto.medium.ttf';
-    const font2Bytes = await fetch( font2Url ).then( res => res.arrayBuffer() );
-    const font2 = await pdfDoc.embedFont( font2Bytes );
+
+    // Fetch and embed fonts concurrently
+    const { font1, font2 } = await fetchAndEmbedFonts( pdfDoc );
+
+    // texts to be inserted in PDF
     const text1 = name;
     const text2 = `For successfully completing the ${ course }`;
     const text3 = `course on ${ formattedDate( approvalDate ) }.`;
+    // Width of Text contents to be inserted, req. for calculating coordinates
     const widthOfText1 = font1.widthOfTextAtSize( text1, 44 );
     const widthOfText2 = font2.widthOfTextAtSize( text2, 18 );
     const widthOfText3 = font2.widthOfTextAtSize( text3, 18 );

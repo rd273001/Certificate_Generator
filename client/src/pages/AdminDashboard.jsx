@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/apiService';
+import LoadingIndicator from '../components/commons/LoadingIndicator';
 
 const AdminDashboard = () => {
   const [requests, setRequests] = useState( [] );
   const [certificates, setCertificates] = useState( [] );
+  const [isLoading, setIsLoading] = useState( false );
 
   useEffect( () => {
-    // handler for getting all certificate requests
-    const fetchRequests = async () => {
+    // Function to fetch both certificate requests and approved certificates concurrently
+    const fetchData = async () => {
+      setIsLoading( true );
       try {
-        const res = await api.get( '/certificates/requests' );
-        setRequests( res.data );
+        // Make both API calls concurrently using Promise.all
+        const [requestsRes, certificatesRes] = await Promise.all( [
+          api.get( '/certificates/requests' ), // Fetch all certificate requests
+          api.get( '/certificates/all' )       // Fetch all approved certificates
+        ] );
+      
+        // Update state with the fetched data
+        setRequests( requestsRes.data );       // Set the fetched requests data
+        setCertificates( certificatesRes.data ); // Set the fetched certificates data
       } catch ( error ) {
-        console.error( 'Error fetching requests:', error.response.data.error );
-      }
-    };
-    // handler for getting all certificates approved
-    const fetchCertificates = async () => {
-      try {
-        const res = await api.get( '/certificates/all' );
-        setCertificates( res.data );
-      } catch ( error ) {
-        console.error( 'Error fetching certificates:', error.response.data.error );
+        // Log any error that occurs during the API calls
+        console.error( 'Error fetching data:', error.response?.data?.error || error.message );
+      } finally {
+        setIsLoading( false );
       }
     };
 
-    fetchRequests();
-    fetchCertificates();
+    // Call the fetchData function to initiate the data fetching
+    fetchData();
   }, [] );
 
+
   return (
-    <div className='flex flex-col items-center gap-y-12 pt-20'>
+    <div className='flex flex-col items-center gap-y-16 pt-24 pb-28 relative min-h-screen'>
 
       <div className='bg-white rounded-lg shadow-lg shadow-gray-500 sm:p-8 p-4 lg:w-2/3 w-full overflow-x-auto'>
         <h2 className='sm:text-3xl text-xl font-bold text-gray-800 mb-6'>Pending Requests</h2>
@@ -52,7 +57,7 @@ const AdminDashboard = () => {
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.email }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>
                   <Link to={ `new-request/${ request._id }` }
-                    className='bg-green-500 hover:bg-green-600 text-white active:opacity-70 py-1 px-3 font-bold rounded-md'
+                    className='bg-green-500 hover:bg-green-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-bold rounded-md'
                   >
                     Approve
                   </Link>
@@ -66,7 +71,7 @@ const AdminDashboard = () => {
         </table>
       </div>
 
-      <div className='bg-white rounded-lg shadow-lg shadow-gray-500 sm:p-8 p-4 mb-7 lg:w-2/3 w-full overflow-x-auto'>
+      <div className='bg-white rounded-lg shadow-lg shadow-gray-500 sm:p-8 p-4 lg:w-2/3 w-full overflow-x-auto'>
         <h2 className='sm:text-3xl text-xl font-bold text-gray-800 mb-6'>Issued Certificates</h2>
         <table className='w-full table-auto'>
           <thead>
@@ -88,7 +93,7 @@ const AdminDashboard = () => {
                     href={ certificate.certificateLink }
                     target='_self'
                     rel='noopener noreferrer'
-                    className='bg-blue-500 hover:bg-blue-600 text-white active:opacity-70 py-1 px-3 font-bold rounded-md'
+                    className='bg-blue-500 hover:bg-blue-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-bold rounded-md'
                   >
                     View Certificate
                   </a>
@@ -101,6 +106,8 @@ const AdminDashboard = () => {
           </tbody>
         </table>
       </div>
+
+      { isLoading && <LoadingIndicator loadingText={ 'Loading...' } /> }
 
     </div>
   );
