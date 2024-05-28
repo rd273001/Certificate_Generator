@@ -1,6 +1,7 @@
 const { PDFDocument, cmyk } = require( 'pdf-lib' );
 const fontkit = require( '@pdf-lib/fontkit' );
 const fs = require( 'fs' );
+const fetch = import( 'node-fetch' );
 const { google } = require( 'googleapis' );
 const { formattedDate } = require( './formattedDate' );
 require( 'dotenv' ).config();
@@ -21,6 +22,15 @@ const fetchAndEmbedFonts = async ( pdfDoc ) => {
   return { font1, font2 };
 };
 
+// Helper function to fetch the PDF from URL
+const fetchPdfFromUrl = async ( url ) => {
+  const res = await fetch( url );
+  if ( !res.ok ) {
+    throw new Error( `Failed to fetch PDF: ${ res.statusText }` );
+  }
+  return await res.arrayBuffer();
+};
+
 // Configure the Google Drive API credentials
 // console.log( 'Private KEY  =>  ', process.env.GOOGLE_PRIVATE_KEY.replace( /\\n/g, '\n' ) );
 const auth = new google.auth.GoogleAuth( {
@@ -34,8 +44,9 @@ const auth = new google.auth.GoogleAuth( {
 // Function to generate the certificate PDF
 exports.generateCertificate = async ( name, course, approvalDate ) => {
   try {
-    // Read the certificate template
-    const templateBytes = fs.readFileSync( 'Certificate_Template.pdf' );
+    // Fetch the certificate template from the URL
+    const templateUrl = 'https://drive.google.com/uc?export=download&id=1tqGU37_W4IWQ93ryPKOj3mb2eak39MJ3';
+    const templateBytes = await fetchPdfFromUrl( templateUrl );
 
     // Create a new PDF document
     const pdfDoc = await PDFDocument.load( templateBytes );
