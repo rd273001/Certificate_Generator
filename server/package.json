@@ -20,7 +20,6 @@
     "mongoose": "^8.3.4",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.0",
-    "pdf-lib": "^1.17.1",
-    "pdfkit": "^0.15.0"
+    "pdf-lib": "^1.17.1"
   }
 }
