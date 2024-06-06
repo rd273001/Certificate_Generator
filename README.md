@@ -11,6 +11,12 @@ Certificate Generator is a web application designed to automate the process of g
 - **Responsive Design**: Works seamlessly on both desktop and mobile devices.
 
 ## Technologies Used
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#) &nbsp;&nbsp; 
+[![Node.js](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#) &nbsp;&nbsp;
+[![Express.js](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](#) &nbsp;&nbsp;
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](#) &nbsp;&nbsp;
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#) &nbsp;&nbsp;
+
 ### Frontend
 - **Vite**: Fast build tool for modern web projects.
 - **React**: JavaScript library for building user interfaces.
@@ -60,11 +66,11 @@ OR
 
 3. Configure environment variables:
 Create a .env file in the server directory with the following variables:
-MONGODB_URI=<your_mongodb_uri>
-GOOGLE_CLIENT_EMAIL=<your_google_client_email>
-GOOGLE_PRIVATE_KEY=<your_google_private_key>
-GOOGLE_DRIVE_FOLDER_ID=<your_google_drive_folder_id>
-PORT=5000
+- MONGODB_URI=<your_mongodb_uri>
+- GOOGLE_CLIENT_EMAIL=<your_google_client_email>
+- GOOGLE_PRIVATE_KEY=<your_google_private_key>
+- GOOGLE_DRIVE_FOLDER_ID=<your_google_drive_folder_id>
+- PORT=5000
 
 4. Start the server:
 ```npm start```
@@ -80,7 +86,10 @@ cd ../client
 OR
 ```yarn```
 
-3. Start the development server:
+3. Create a .env file in the client directory with the following variable(s):
+- BASE_URL=<your_base_url>
+
+4. Start the development server:
 ```npm run dev```
 OR
 ```yarn dev```
@@ -105,5 +114,6 @@ Feel free to contribute to the Repo:
 4. Push to the branch (git push origin feature-branch).
 
 5. Open a Pull Request.
+<br/><br/><br/>
 
-## Please Star the Repo if you like the Code, UI, anything about the Project.
+## Please Star⭐=>🌟 the Repo if you like the Code, UI, anything about the Project.

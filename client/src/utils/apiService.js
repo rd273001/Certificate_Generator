@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create( {
-  baseURL: `https://certificate-generator-yof0.onrender.com/api`,
+  baseURL: process.env.BASE_URL,
 } );
 
 export default api;
