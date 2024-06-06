@@ -1,0 +1,12 @@
+{
+  "name": "certificate_generator",
+  "version": "1.0.0",
+  "description": "Certificate Generator is a web application designed to automate the process of generating and managing certificates for various courses. The application allows users to request certificates, which can then be approved and generated in PDF format. The generated certificates are stored on Google Drive and can be accessed via a link.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["certificate generator", "react", "tailwind", "MERN", "REST APIs"],
+  "author": "",
+  "license": "ISC"
+}
