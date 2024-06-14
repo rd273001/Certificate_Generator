@@ -9,6 +9,7 @@ const sweetAlert = ( { title, text, icon, ...props } ) => {
     text,
     title: title ?? 'Success!',
     icon: icon ?? 'success',
+    toast: true,
     timer: props?.timer ?? 3000,
     timerProgressBar: true,
     customClass: {
