@@ -42,6 +42,9 @@ const auth = new google.auth.GoogleAuth( {
 
 // Function to generate the certificate PDF
 exports.generateCertificate = async ( name, course, approvalDate ) => {
+  // temp file created in root directory for writing
+  const tempFilePath = 'Certificate.pdf';
+
   try {
     // Fetch the certificate template from the URL
     const templateUrl = process.env.CERTIFICATE_TEMPLATE_URL;
@@ -78,18 +81,18 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
 
     // Save the modified PDF
     const modifiedPdfBytes = await pdfDoc.save();
-    fs.writeFileSync( 'Certificate.pdf', modifiedPdfBytes );
+    fs.writeFileSync( tempFilePath, modifiedPdfBytes );
 
     // Create an authorized client
     const drive = google.drive( { version: 'v3', auth } );
     
     const fileMetadata = {
-      name: `${ name }_${ course }_Certificate.pdf`,
+      name: `${ name }_${ course }_${ tempFilePath }`,
       parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
     };
     const media = {
       mimeType: 'application/pdf',
-      body: fs.createReadStream( 'Certificate.pdf' )
+      body: fs.createReadStream( tempFilePath )
     };
     
     // Upload the certificate PDF to Google Drive
@@ -103,9 +106,16 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     // Get the link to the uploaded file
     const certificateLink = `https://drive.google.com/file/d/${ file.data.id }/view`;
 
+    // Cleanup: Delete the temporary PDF file
+    fs.unlinkSync( tempFilePath );
+
     return certificateLink;
   } catch ( error ) {
     console.error( 'Error generating certificate:', error );
+    // Cleanup in case of an error
+    if ( fs.existsSync( tempFilePath ) ) {
+      fs.unlinkSync( tempFilePath );
+    }
     throw error;
   }
 };

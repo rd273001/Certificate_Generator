@@ -100,7 +100,7 @@ const CertificateRequestForm = () => {
             { errors.email && <p className='text-red-500 text-sm -mt-4 mb-4'>{ errors.email }</p> }
           </div>
 
-          <PrimaryButton isLoading={ isLoading } title={ 'Get Certificate' } />
+          <PrimaryButton isLoading={ isLoading } title={ isLoading ? 'Sending Request...' : 'Get Certificate' } />
 
         </fieldset>
         { isLoading && <LoadingIndicator loadingText={ 'Requesting...' } /> }

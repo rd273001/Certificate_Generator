@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../utils/apiService';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
 import sweetAlert from '../utils/sweetAlert';
+import PrimaryButton from '../components/commons/PrimaryButton';
 
 const AdminDashboard = () => {
   const [requests, setRequests] = useState( [] );
@@ -10,34 +11,35 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState( false );
 
   useEffect( () => {
-    // Function to fetch both certificate requests and approved certificates concurrently
+    // Handler to fetch both requests & certificates
     const fetchData = async () => {
       setIsLoading( true );
-      try {
-        // Make both API calls concurrently using Promise.all
-        const [requestsRes, certificatesRes] = await Promise.all( [
-          api.get( '/certificates/requests' ), // Fetch all certificate requests
-          api.get( '/certificates/all' )       // Fetch all approved certificates
-        ] );
-      
-        // Update state with the fetched data
-        setRequests( requestsRes.data );       // Set the fetched requests data
-        setCertificates( certificatesRes.data ); // Set the fetched certificates data
-      } catch ( error ) {
-        // Log any error that occurs during the API calls
-        console.error( 'Error fetching data:', error.response?.data?.error || error.message );
-      } finally {
-        setIsLoading( false );
-      }
+      // Make both API calls(for requests & certificates) concurrently using Promise.all
+      await Promise.all( [fetchRequests(), fetchCertificates()] );
+      setIsLoading( false );
     };
 
-    // Call the fetchData function to initiate the data fetching
     fetchData();
   }, [] );
 
-  // handler for filtering list of requests
-  const filterRequestsList = ( itemId ) => {
-    return requests.filter( request => request._id !== itemId );
+  // Handler to fetch certificate requests
+  const fetchRequests = async () => {
+    try {
+      const requestsRes = await api.get( '/certificates/requests' );
+      setRequests( requestsRes.data );
+    } catch ( error ) {
+      console.error( 'Error fetching requests:', error.response?.data?.error || error.message );
+    }
+  };
+
+  // Handler to fetch approved certificates
+  const fetchCertificates = async () => {
+    try {
+      const certificatesRes = await api.get( '/certificates/all' );
+      setCertificates( certificatesRes.data );
+    } catch ( error ) {
+      console.error( 'Error fetching certificates:', error.response?.data?.error || error.message );
+    }
   };
 
   // handler for approving and generating the certificate
@@ -45,11 +47,12 @@ const AdminDashboard = () => {
     const { _id, name, course, email } = certificateDetails;
     try {
       setIsLoading( true );
-      await api.put( `/certificates/create/${ _id }`, { name, course, email, approvalDate: new Date() } );
-      // Remove the approved request from the requests array
-      setRequests( filterRequestsList( _id ) );
+      const generateCertificate = { name, course, email, approvalDate: new Date() };
+      await api.put( `/certificates/create/${ _id }`, generateCertificate );
 
       sweetAlert( { text: 'Certificate generated successfully.' } );
+      // refresh the requests & certificates data
+      await Promise.all( [fetchRequests(), fetchCertificates()] );
     } catch ( error ) {
       sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
     } finally {
@@ -62,10 +65,10 @@ const AdminDashboard = () => {
     try {
       setIsLoading( true );
       await api.delete( `/certificates/reject/${ _id }` );
-      // Remove the rejected request from the requests array
-      setRequests( filterRequestsList( _id ) );
 
       sweetAlert( { text: 'Certificate request rejected.' } );
+      //  refresh the requests data
+      await fetchRequests();
     } catch ( error ) {
       sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
     } finally {
@@ -94,19 +97,19 @@ const AdminDashboard = () => {
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.course }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.email }</td>
                 <td className='border-2 border-gray-400 text-nowrap px-2 sm:px-4 py-2'>
-                  <button
-                    onClick={ () => { handleApprove( request ); } }
-                    className='bg-green-500 hover:bg-green-600 text-white text-nowrap md:mr-4 mr-2 active:opacity-70 py-1 px-3 font-semibold rounded-md'
-                  >
-                    Approve
-                  </button>
+                  <PrimaryButton
+                    title='Approve'
+                    isLoading={ isLoading }
+                    onClick={ () => { handleApprove( request ) } }
+                    className={ `${ isLoading ? 'opacity-40 cursor-not-allowed' : '' } bg-green-500 hover:bg-green-600 text-white text-nowrap md:mr-4 mr-2 active:opacity-70 py-1 px-3 font-semibold rounded-md` }
+                  />
 
-                  <button
-                    onClick={ () => { handleReject( request._id ); } }
-                    className='bg-red-500 hover:bg-red-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-semibold rounded-md'
-                  >
-                    Reject
-                  </button>
+                  <PrimaryButton
+                    title='Reject'
+                    isLoading={ isLoading }
+                    onClick={ () => { handleReject( request._id ) } }
+                    className={ `${ isLoading ? 'opacity-40 cursor-not-allowed' : '' } bg-red-500 hover:bg-red-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-semibold rounded-md` }
+                  />
                 </td>
               </tr>
             ) ) : <tr>
