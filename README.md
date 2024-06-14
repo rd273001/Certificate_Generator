@@ -6,8 +6,9 @@ Certificate Generator is a web application designed to automate the process of g
 
 ## Features
 
+- **CRUD Operations**: Full create, read, update, and delete functionality for certificate generation management.
 - **Certificate Request**: Users can request certificates by providing necessary details.
-- **Certificate Approval**: Admins can approve certificate requests.
+- **Certificate Approval**: Admins can approve or reject certificate requests.
 - **PDF Generation**: Generate certificate PDFs with dynamic user data.
 - **Google Drive Integration**: Store generated certificates on Google Drive.
 - **Responsive Design**: Works seamlessly on both desktop and mobile devices.
@@ -119,7 +120,9 @@ OR
 
 - POST `/api/certificates/request`: Create a new certificate request.
 
-- PUT `/api/certificates/create/:id`: Approve a certificate request and generate the certificate PDF save the PDF on Google Drive Folder.
+- PUT `/api/certificates/create/:id`: Approve a certificate request and generate the certificate PDF, saving the PDF on Google Drive.
+
+- DELETE `/api/certificates/reject/:id`: Reject a certificate request.
 
 ## Contribution Guidelines
 
