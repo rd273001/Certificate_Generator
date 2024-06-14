@@ -11,15 +11,18 @@ router.get( '/get/:_id', async ( req, res ) => {
 } );
 
 // Route for creating a new certificate request
-router.post( '/request', certificateController.createRequest );
+router.post( '/request', certificateController.createCertificateRequest );
 
 // Route for retrieving all certificate requests
 router.get( '/requests', certificateController.getAllRequests );
 
-// Route for generating a new certificate
-router.post( '/create/:_id', certificateController.generateCertificate );
+// Route for generating a new certificate(updating the pending Certificate Request)
+router.put( '/create/:_id', certificateController.generateCertificate );
 
 // Route for retrieving all certificates
 router.get( '/all', certificateController.getAllCertificates );
+
+// Route for rejecting a certificate
+router.delete( '/reject/:_id', certificateController.rejectCertificateRequest );
 
 module.exports = router;

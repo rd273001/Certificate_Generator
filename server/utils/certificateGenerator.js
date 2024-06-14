@@ -1,7 +1,6 @@
 const { PDFDocument, cmyk } = require( 'pdf-lib' );
 const fontkit = require( '@pdf-lib/fontkit' );
 const fs = require( 'fs' );
-const fetch = import( 'node-fetch' );
 const { google } = require( 'googleapis' );
 const { formattedDate } = require( './formattedDate' );
 require( 'dotenv' ).config();
@@ -45,7 +44,7 @@ const auth = new google.auth.GoogleAuth( {
 exports.generateCertificate = async ( name, course, approvalDate ) => {
   try {
     // Fetch the certificate template from the URL
-    const templateUrl = 'https://drive.google.com/uc?export=download&id=1tqGU37_W4IWQ93ryPKOj3mb2eak39MJ3';
+    const templateUrl = process.env.CERTIFICATE_TEMPLATE_URL;
     const templateBytes = await fetchPdfFromUrl( templateUrl );
 
     // Create a new PDF document

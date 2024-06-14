@@ -2,16 +2,23 @@ const Certificate = require( '../models/Certificate' );
 const certificateGenerator = require( '../utils/certificateGenerator' );
 
 // Controller for creating a new certificate request
-exports.createRequest = async ( req, res ) => {
+exports.createCertificateRequest = async ( req, res ) => {
   try {
     const { name, course, email } = req.body;
 
-    const request = new Certificate( {
-      name,
-      course,
-      email,
-    } );
+    // Search for a certificate with the matching course and email
+    const existingCertificate = await Certificate.findOne( { email, course } );
 
+    if ( existingCertificate ) {
+      return res.status( 409 ).json( {
+        error: existingCertificate.status === 'pending'
+          ? 'Certificate request already exists for the course!'
+          : 'Certificate already generated for the course!'
+      } );
+    }
+
+    // If no existing certificate is found for the same course with same email, create a new request
+    const request = new Certificate( { name, course, email, } );
     await request.save();
 
     res.status( 201 ).json( 'Certificate request submitted successfully.' );
@@ -33,7 +40,7 @@ exports.getAllRequests = async ( req, res ) => {
 // Controller for approving and generating the certificate requested by User
 exports.generateCertificate = async ( req, res ) => {
   try {
-    const _id = req.params._id;
+    const { _id } = req.params;
     const { name, course, email, approvalDate } = req.body;
 
     // Find the existing certificate
@@ -73,5 +80,16 @@ exports.getAllCertificates = async ( req, res ) => {
     res.status( 200 ).json( certificates );
   } catch ( error ) {
     res.status( 500 ).json( { error: 'Failed to retrieve certificates!' } );
+  }
+};
+
+// Controller for rejecting(deleting) a certificate request
+exports.rejectCertificateRequest = async ( req, res ) => {
+  try {
+    const { _id } = req.params;
+    await Certificate.findByIdAndDelete( _id );
+    res.status( 200 ).json( 'Certificate deleted successfully.' );
+  } catch ( error ) {
+    res.status( 500 ).json( { error: 'Failed to delete the certificate!' } );
   }
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/apiService';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
+import sweetAlert from '../utils/sweetAlert';
 
 const AdminDashboard = () => {
   const [requests, setRequests] = useState( [] );
@@ -34,6 +35,43 @@ const AdminDashboard = () => {
     fetchData();
   }, [] );
 
+  // handler for filtering list of requests
+  const filterRequestsList = ( itemId ) => {
+    return requests.filter( request => request._id !== itemId );
+  };
+
+  // handler for approving and generating the certificate
+  const handleApprove = async ( certificateDetails ) => {
+    const { _id, name, course, email } = certificateDetails;
+    try {
+      setIsLoading( true );
+      await api.put( `/certificates/create/${ _id }`, { name, course, email, approvalDate: new Date() } );
+      // Remove the approved request from the requests array
+      setRequests( filterRequestsList( _id ) );
+
+      sweetAlert( { text: 'Certificate generated successfully.' } );
+    } catch ( error ) {
+      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
+    } finally {
+      setIsLoading( false );
+    }
+  };
+
+  // handler for rejecting the certificate
+  const handleReject = async ( _id ) => {
+    try {
+      setIsLoading( true );
+      await api.delete( `/certificates/reject/${ _id }` );
+      // Remove the rejected request from the requests array
+      setRequests( filterRequestsList( _id ) );
+
+      sweetAlert( { text: 'Certificate request rejected.' } );
+    } catch ( error ) {
+      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
+    } finally {
+      setIsLoading( false );
+    }
+  };
 
   return (
     <div className='flex flex-col items-center gap-y-16 pt-24 pb-28 relative min-h-screen'>
@@ -55,12 +93,20 @@ const AdminDashboard = () => {
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.name }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.course }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ request.email }</td>
-                <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>
-                  <Link to={ `new-request/${ request._id }` }
-                    className='bg-green-500 hover:bg-green-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-bold rounded-md'
+                <td className='border-2 border-gray-400 text-nowrap px-2 sm:px-4 py-2'>
+                  <button
+                    onClick={ () => { handleApprove( request ); } }
+                    className='bg-green-500 hover:bg-green-600 text-white text-nowrap md:mr-4 mr-2 active:opacity-70 py-1 px-3 font-semibold rounded-md'
                   >
                     Approve
-                  </Link>
+                  </button>
+
+                  <button
+                    onClick={ () => { handleReject( request._id ); } }
+                    className='bg-red-500 hover:bg-red-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-semibold rounded-md'
+                  >
+                    Reject
+                  </button>
                 </td>
               </tr>
             ) ) : <tr>
@@ -89,14 +135,14 @@ const AdminDashboard = () => {
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ certificate.course }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{ certificate.email }</td>
                 <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>
-                  <a
-                    href={ certificate.certificateLink }
+                  <Link
+                    to={ certificate.certificateLink }
                     target='_self'
                     rel='noopener noreferrer'
-                    className='bg-blue-500 hover:bg-blue-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-bold rounded-md'
+                    className='bg-blue-500 hover:bg-blue-600 text-white text-nowrap active:opacity-70 py-1 px-3 font-semibold rounded-md'
                   >
                     View Certificate
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ) ) : <tr>
