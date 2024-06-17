@@ -20,7 +20,10 @@ Certificate Generator is a web application designed to automate the process of g
 [![Express.js](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](#) &nbsp;&nbsp;
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](#) &nbsp;&nbsp;
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#) &nbsp;&nbsp;
-[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](#)
+[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](#) &nbsp;&nbsp;
+[![Axios](https://img.shields.io/badge/axios-671ddf?&style=for-the-badge&logo=axios&logoColor=white)](#) &nbsp;&nbsp;
+[![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](#) &nbsp;&nbsp;
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](#)
 
 ### Frontend
 
@@ -78,15 +81,14 @@ To enable Google Drive integration, you need to set up Google Drive API credenti
 OR
 ```yarn```
 
-3. Configure environment variables:
-Create a .env file in the server directory with the following variables:
+3. Configure environment variables: Create a .env file in the server directory with the following variables:
 
-- MONGODB_URI=<your_mongodb_uri>
-- GOOGLE_CLIENT_EMAIL=<your_google_client_email>
-- GOOGLE_PRIVATE_KEY=<your_google_private_key>
-- GOOGLE_DRIVE_FOLDER_ID=<your_google_drive_folder_id>
-- CERTIFICATE_TEMPLATE_URL=<your_certificate_template_url>
-- PORT=5000
+   - MONGODB_URI=<your_mongodb_uri>
+   - GOOGLE_CLIENT_EMAIL=<your_google_client_email>
+   - GOOGLE_PRIVATE_KEY=<your_google_private_key>
+   - GOOGLE_DRIVE_FOLDER_ID=<your_google_drive_folder_id>
+   - CERTIFICATE_TEMPLATE_URL=<your_certificate_template_url>
+   - PORT=<PORT_NO>
 
 4. Start the server:
 ```npm start```
@@ -105,7 +107,7 @@ OR
 
 3. Create a .env file in the client directory with the following variable(s):
 
-- BASE_URL=<your_base_url>
+   - BASE_URL=<your_base_url>
 
 4. Start the development server:
 ```npm run dev```
@@ -133,6 +135,6 @@ Feel free to contribute to the Repo:
 3. Make your changes and commit them (git commit -m 'Add new feature').
 4. Push to the branch (git push origin feature-branch).
 5. Open a Pull Request.
-<br/><br/><br/>
+<br/><br/>
 
 ## Please Star⭐=>🌟 the Repo if you like the Code, UI, anything about the Project
