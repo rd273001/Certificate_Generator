@@ -4,8 +4,8 @@ import { Outlet, Link, NavLink } from 'react-router-dom';
 const Layout = () => {
   const [role, setRole] = useState( 'Admin' );
   return (
-    <div className='flex flex-col relative min-h-screen'>
-      <header className='fixed z-10 flex justify-between w-full items-center bg-gradient-to-r from-purple-500 to-pink-500 py-3 md:px-8 px-4'>
+    <div className='flex flex-col min-h-screen'>
+      <header className='flex justify-between w-full items-center bg-gradient-to-r from-purple-500 to-pink-500 py-3 md:px-8 px-4'>
         <Link to='/' className='text-white font-bold sm:text-2xl text-xl hover:opacity-85 active:opacity-70'>
           Certificate Generator
         </Link>
@@ -27,11 +27,11 @@ const Layout = () => {
         </div>
       </header>
 
-      <main className='flex-grow bg-gradient-to-tl from-gray-100 via-gray-300 to-white md:px-8 px-4'>
+      <main className='flex flex-grow bg-gradient-to-tl from-gray-100 via-gray-300 to-white'>
         <Outlet />
       </main>
 
-      <footer className='bg-gray-800 py-4 md:px-8 px-4 absolute z-10 bottom-0 w-full text-center text-white'>
+      <footer className='bg-gray-800 py-4 md:px-8 px-4 text-center text-white'>
         <p>&copy; { new Date().getFullYear() } Certificate Generator. All rights reserved.</p>
       </footer>
     </div>

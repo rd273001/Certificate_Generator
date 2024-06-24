@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["certificate generator", "react", "tailwind", "MERN", "REST APIs"],
+  "keywords": ["certificate generator", "react", "tailwind", "mern", "MERN stack", "googleapis", "google drive api", "REST APIs"],
   "author": "",
   "license": "ISC"
 }

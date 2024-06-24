@@ -55,9 +55,9 @@ const CertificateRequestForm = () => {
   };
 
   return (
-    <div className='flex pt-24 pb-28 relative min-h-screen'>
-      
-      <form onSubmit={ handleSubmit } className='relative top-0 left-0 right-0 bottom-0 m-auto items-center justify-center lg:w-1/2 md:w-3/4 w-full'>
+    <div className='flex flex-grow items-center justify-center md:px-8 px-4 md:pt-12 pt-10 md:pb-14 pb-12'>
+
+      <form onSubmit={ handleSubmit } className={ `lg:w-1/2 md:w-3/4 w-full ${ isLoading ? 'opacity-35' : '' }` }>
         <fieldset className='border-[3px] border-purple-400 rounded-xl p-4 sm:p-8 shadow-lg shadow-purple-400 bg-gradient-to-br from-gray-400 to-slate-200'>
           <legend className='sm:text-3xl text-2xl font-bold text-gray-800'>Get Your Certificate</legend>
           <div>
@@ -103,9 +103,10 @@ const CertificateRequestForm = () => {
           <PrimaryButton isLoading={ isLoading } title={ isLoading ? 'Sending Request...' : 'Get Certificate' } />
 
         </fieldset>
-        { isLoading && <LoadingIndicator loadingText={ 'Requesting...' } /> }
 
       </form>
+
+      { isLoading && <LoadingIndicator loadingText={ 'Requesting...' } /> }
 
     </div>
   );
