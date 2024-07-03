@@ -15,15 +15,16 @@ Certificate Generator is a web application designed to automate the process of g
 
 ## Technologies Used
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#) &nbsp;&nbsp;
-[![Node.js](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#) &nbsp;&nbsp;
-[![Express.js](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](#) &nbsp;&nbsp;
-[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](#) &nbsp;&nbsp;
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#) &nbsp;&nbsp;
-[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](#) &nbsp;&nbsp;
-[![Axios](https://img.shields.io/badge/axios-671ddf?&style=for-the-badge&logo=axios&logoColor=white)](#) &nbsp;&nbsp;
-[![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](#) &nbsp;&nbsp;
-[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](#)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](#) &nbsp;&nbsp;
+[![Redux](https://img.shields.io/badge/Redux-593D88?logo=redux&logoColor=white)](#)
+[![Node.js](https://img.shields.io/badge/Node%20js-339933?logo=nodedotjs&logoColor=white)](#) &nbsp;&nbsp;
+[![Express.js](https://img.shields.io/badge/Express%20js-000000?logo=express&logoColor=white)](#) &nbsp;&nbsp;
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?logo=mongodb&logoColor=white)](#) &nbsp;&nbsp;
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](#) &nbsp;&nbsp;
+[![JavaScript](https://img.shields.io/badge/JavaScript-323330?logo=javascript&logoColor=F7DF1E)](#) &nbsp;&nbsp;
+[![Axios](https://img.shields.io/badge/axios-671ddf?&logo=axios&logoColor=white)](#) &nbsp;&nbsp;
+[![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=react-router&logoColor=white)](#) &nbsp;&nbsp;
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?logo=vite&logoColor=FFD62E)](#)
 
 ### Frontend
 
@@ -47,7 +48,7 @@ Certificate Generator is a web application designed to automate the process of g
 
 ## Live Demo
 
-Check out the deployed application at: [Certificate Generator](https://certificate-generator1.netlify.app)
+Check out the live website at: [Certificate Generator](https://certificate-generator1.netlify.app)
 
 ## Setup Instructions
 
