@@ -27,7 +27,7 @@ const Layout = () => {
         </div>
       </header>
 
-      <main className='flex flex-grow bg-gradient-to-tl from-gray-100 via-gray-300 to-white'>
+      <main className='flex flex-col flex-grow bg-gradient-to-tl from-gray-100 via-gray-300 to-white'>
         <Outlet />
       </main>
 

@@ -1,79 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../utils/apiService';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
-import sweetAlert from '../utils/sweetAlert';
 import PrimaryButton from '../components/commons/PrimaryButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { approveCertificate, fetchCertificates, fetchRequests, rejectCertificate } from '../store/certificateSlice';
 
 const AdminDashboard = () => {
-  const [requests, setRequests] = useState( [] );
-  const [certificates, setCertificates] = useState( [] );
-  const [isLoading, setIsLoading] = useState( false );
+  const dispatch = useDispatch();
+  const { requests, certificates, isLoading } = useSelector( ( state ) => state.certificate );
 
   useEffect( () => {
-    // Handler to fetch both requests & certificates
-    const fetchData = async () => {
-      setIsLoading( true );
-      // Make both API calls(for requests & certificates) concurrently using Promise.all
-      await Promise.all( [fetchRequests(), fetchCertificates()] );
-      setIsLoading( false );
-    };
-
-    fetchData();
+    dispatch( fetchRequests() );
+    dispatch( fetchCertificates() );
   }, [] );
 
-  // Handler to fetch certificate requests
-  const fetchRequests = async () => {
-    try {
-      const requestsRes = await api.get( '/certificates/requests' );
-      setRequests( requestsRes.data );
-    } catch ( error ) {
-      console.error( 'Error fetching requests:', error.response?.data?.error || error.message );
-    }
-  };
-
-  // Handler to fetch approved certificates
-  const fetchCertificates = async () => {
-    try {
-      const certificatesRes = await api.get( '/certificates/all' );
-      setCertificates( certificatesRes.data );
-    } catch ( error ) {
-      console.error( 'Error fetching certificates:', error.response?.data?.error || error.message );
-    }
-  };
 
   // handler for approving and generating the certificate
   const handleApprove = async ( certificateDetails ) => {
-    const { _id, name, course, email } = certificateDetails;
-    try {
-      setIsLoading( true );
-      const generateCertificate = { name, course, email, approvalDate: new Date() };
-      await api.put( `/certificates/create/${ _id }`, generateCertificate );
-
-      sweetAlert( { text: 'Certificate generated successfully.' } );
-      // refresh the requests & certificates data
-      await Promise.all( [fetchRequests(), fetchCertificates()] );
-    } catch ( error ) {
-      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
-    } finally {
-      setIsLoading( false );
-    }
+    dispatch( approveCertificate( certificateDetails ) );
   };
 
   // handler for rejecting the certificate
   const handleReject = async ( _id ) => {
-    try {
-      setIsLoading( true );
-      await api.delete( `/certificates/reject/${ _id }` );
-
-      sweetAlert( { text: 'Certificate request rejected.' } );
-      //  refresh the requests data
-      await fetchRequests();
-    } catch ( error ) {
-      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error', } );
-    } finally {
-      setIsLoading( false );
-    }
+    dispatch( rejectCertificate( _id ) );
   };
 
   return (

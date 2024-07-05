@@ -10,7 +10,7 @@ const sweetAlert = ( { title, text, icon, ...props } ) => {
     title: title ?? 'Success!',
     icon: icon ?? 'success',
     toast: true,
-    timer: props?.timer ?? 3000,
+    timer: props?.timer ?? 4000,
     timerProgressBar: true,
     customClass: {
       popup: 'bg-purple-100 rounded-xl pb-10',

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import api from '../utils/apiService';
-import sweetAlert from '../utils/sweetAlert';
 import PrimaryButton from './commons/PrimaryButton';
 import LoadingIndicator from './commons/LoadingIndicator';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestCertificate } from '../store/certificateSlice';
 
 
 const CertificateRequestForm = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector( ( state ) => state.certificate.isLoading );
   const [name, setName] = useState( '' );
   const [course, setCourse] = useState( '' );
   const [email, setEmail] = useState( '' );
   const [errors, setErrors] = useState( {} );
-  const [isLoading, setIsLoading] = useState( false );
 
   const handleSubmit = async ( e ) => {
     e.preventDefault();
@@ -19,23 +20,7 @@ const CertificateRequestForm = () => {
       setErrors( errors );
       return;
     }
-    try {
-      setIsLoading( true );
-      await api.post( '/certificates/request', { name, course, email } );
-
-      // alert for successfully raising a request for Certificate
-      sweetAlert( { text: 'Your certificate request has been submitted successfully.' } );
-
-      // Reset form fields
-      setName( '' );
-      setCourse( '' );
-      setEmail( '' );
-    } catch ( error ) {
-      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error' } );
-    } finally {
-      setErrors( {} );
-      setIsLoading( false );
-    }
+    dispatch( requestCertificate( { name, course, email } ) );
   };
 
   // handler for error validation
