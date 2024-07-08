@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
 import PrimaryButton from '../components/commons/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { approveCertificate, fetchCertificates, fetchRequests, rejectCertificate } from '../store/certificateSlice';
+import { approveCertificate, fetchCertificates, fetchRequests, rejectCertificate } from '../store/certificateSlice.js';
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   useEffect( () => {
     dispatch( fetchRequests() );
     dispatch( fetchCertificates() );
-  }, [] );
+  }, [dispatch] );
 
 
   // handler for approving and generating the certificate
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
       <div className={ `flex flex-col items-center justify-center gap-y-16 md:px-8 px-4 md:pt-12 pt-10 md:pb-14 pb-12 ${ isLoading ? 'opacity-35' : '' }` }>
 
         <div className='bg-white rounded-lg shadow-lg shadow-gray-500 sm:p-8 p-4 lg:w-2/3 w-full overflow-x-auto'>
-          <h2 className='sm:text-3xl text-xl font-bold text-gray-800 mb-6'>Pending Requests</h2>
+          <h2 className='sm:text-3xl text-xl font-semibold text-gray-800 mb-6'>Pending Requests</h2>
           <table className='w-full table-auto'>
             <thead>
               <tr className='bg-gray-200'>
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className='bg-white rounded-lg shadow-lg shadow-gray-500 sm:p-8 p-4 lg:w-2/3 w-full overflow-x-auto'>
-          <h2 className='sm:text-3xl text-xl font-bold text-gray-800 mb-6'>Issued Certificates</h2>
+          <h2 className='sm:text-3xl text-xl font-semibold text-gray-800 mb-6'>Issued Certificates</h2>
           <table className='w-full table-auto'>
             <thead>
               <tr className='bg-gray-200'>

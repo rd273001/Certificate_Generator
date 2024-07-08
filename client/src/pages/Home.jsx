@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PrimaryButton from './commons/PrimaryButton';
-import LoadingIndicator from './commons/LoadingIndicator';
+import PrimaryButton from '../components/commons/PrimaryButton';
+import LoadingIndicator from '../components/commons/LoadingIndicator';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestCertificate } from '../store/certificateSlice';
 
@@ -21,6 +21,10 @@ const CertificateRequestForm = () => {
       return;
     }
     dispatch( requestCertificate( { name, course, email } ) );
+    setName( '' );
+    setCourse( '' );
+    setEmail( '' );
+    setErrors( {} );
   };
 
   // handler for error validation
@@ -43,8 +47,8 @@ const CertificateRequestForm = () => {
     <div className='flex flex-grow items-center justify-center md:px-8 px-4 md:pt-12 pt-10 md:pb-14 pb-12'>
 
       <form onSubmit={ handleSubmit } className={ `lg:w-1/2 md:w-3/4 w-full ${ isLoading ? 'opacity-35' : '' }` }>
-        <fieldset className='border-[3px] border-purple-400 rounded-xl p-4 sm:p-8 shadow-lg shadow-purple-400 bg-gradient-to-br from-gray-400 to-slate-200'>
-          <legend className='sm:text-3xl text-2xl font-bold text-gray-800'>Get Your Certificate</legend>
+        <fieldset className='rounded-xl p-4 sm:p-8 shadow-lg shadow-purple-600 bg-gradient-to-br from-gray-400 to-slate-200'>
+          <legend className='sm:text-3xl text-2xl font-semibold text-gray-800'>Get Your Certificate</legend>
           <div>
             <label htmlFor='name' className='block text-gray-700 font-bold'>
               Name

@@ -54,7 +54,7 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     const pdfDoc = await PDFDocument.load( templateBytes );
     // Get the content of certificate template PDF
     const page = pdfDoc.getPage( 0 );
-    
+
     // Get the width and height of the first page
     const { width, height } = page.getSize();
 
@@ -85,7 +85,7 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
 
     // Create an authorized client
     const drive = google.drive( { version: 'v3', auth } );
-    
+
     const fileMetadata = {
       name: `${ name }_${ course }_${ tempFilePath }`,
       parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
@@ -94,14 +94,13 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
       mimeType: 'application/pdf',
       body: fs.createReadStream( tempFilePath )
     };
-    
+
     // Upload the certificate PDF to Google Drive
-    const file = await drive.files.create( {
+    const file = drive.files.create( {
       requestBody: fileMetadata,
       media: media,
       fields: 'id'
     } );
-    console.log( 'Google Drive Response  => ', file.data );
 
     // Get the link to the uploaded file
     const certificateLink = `https://drive.google.com/file/d/${ file.data.id }/view`;
@@ -111,7 +110,7 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
 
     return certificateLink;
   } catch ( error ) {
-    console.error( 'Error generating certificate:', error );
+    // console.error( 'Error generating certificate:', error );
     // Cleanup in case of an error
     if ( fs.existsSync( tempFilePath ) ) {
       fs.unlinkSync( tempFilePath );

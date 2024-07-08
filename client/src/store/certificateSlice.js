@@ -54,7 +54,6 @@ export const approveCertificate = createAsyncThunk(
       sweetAlert( { text: 'Certificate generated successfully.' } );
       dispatch( fetchRequests() );
       dispatch( fetchCertificates() );
-      return generateCertificate;
     } catch ( error ) {
       sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error' } );
       return rejectWithValue( error.response.data );
@@ -70,7 +69,6 @@ export const rejectCertificate = createAsyncThunk(
       await api.delete( `/certificates/reject/${ _id }` );
       sweetAlert( { text: 'Certificate request rejected.' } );
       dispatch( fetchRequests() );
-      return _id;
     } catch ( error ) {
       sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error' } );
       return rejectWithValue( error.response.data );

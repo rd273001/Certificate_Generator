@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import AdminDashboard from './pages/AdminDashboard';
-import CertificateRequestForm from './components/CertificateRequestForm';
+import CertificateRequestForm from './pages/Home';
 import { Provider } from 'react-redux';
 import store from './store/configureStore';
 
