@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <header className='flex justify-between w-full items-center bg-gradient-to-r from-purple-500 to-pink-500 py-3 md:px-8 px-4'>
+    <header className='flex justify-between w-full items-center bg-gradient-to-r from-purple-500 to-pink-500 py-2 md:px-8 px-4'>
 
       <Link to='/' className='text-white font-bold sm:text-2xl text-xl hover:opacity-85 active:opacity-70'>
         Certificate Generator

@@ -82,6 +82,7 @@ const certificateSlice = createSlice( {
     requests: [],
     certificates: [],
     isLoading: false,
+    isRequesting: false,
     error: null,
   },
   reducers: {},
@@ -89,13 +90,13 @@ const certificateSlice = createSlice( {
     builder
       // Request Certificate
       .addCase( requestCertificate.pending, ( state ) => {
-        state.isLoading = true;
+        state.isRequesting = true;
       } )
       .addCase( requestCertificate.fulfilled, ( state ) => {
-        state.isLoading = false;
+        state.isRequesting = false;
       } )
       .addCase( requestCertificate.rejected, ( state, action ) => {
-        state.isLoading = false;
+        state.isRequesting = false;
         state.error = action.payload;
       } )
       // Fetch Requests
