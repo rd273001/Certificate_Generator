@@ -1,6 +1,6 @@
 const express = require( 'express' );
 const router = express.Router();
-const certificateController = require( '../controllers/certificateController' );
+const certificateControllers = require( '../controllers/certificateControllers' );
 
 router.get( '/get/:_id', async ( req, res ) => {
   try {
@@ -11,18 +11,18 @@ router.get( '/get/:_id', async ( req, res ) => {
 } );
 
 // Route for creating a new certificate request
-router.post( '/request', certificateController.createCertificateRequest );
+router.post( '/request', certificateControllers.createCertificateRequest );
 
 // Route for retrieving all certificate requests
-router.get( '/requests', certificateController.getAllRequests );
+router.get( '/requests', certificateControllers.getAllRequests );
 
 // Route for generating a new certificate(updating the pending Certificate Request)
-router.put( '/create/:_id', certificateController.generateCertificate );
+router.put( '/create/:_id', certificateControllers.generateCertificate );
 
 // Route for retrieving all certificates
-router.get( '/all', certificateController.getAllCertificates );
+router.get( '/all', certificateControllers.getAllCertificates );
 
 // Route for rejecting a certificate
-router.delete( '/reject/:_id', certificateController.rejectCertificateRequest );
+router.delete( '/reject/:_id', certificateControllers.rejectCertificateRequest );
 
 module.exports = router;

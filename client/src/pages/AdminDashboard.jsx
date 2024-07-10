@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
 import PrimaryButton from '../components/commons/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { approveCertificate, fetchCertificates, fetchRequests, rejectCertificate } from '../store/certificateSlice.js';
+import { approveCertificate, fetchRequestsAndCertificates, rejectCertificate } from '../store/certificateActions';
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const { requests, certificates, isLoading } = useSelector( ( state ) => state.certificate );
 
   useEffect( () => {
-    dispatch( fetchRequests() );
-    dispatch( fetchCertificates() );
-  }, [dispatch] );
+    dispatch( fetchRequestsAndCertificates() );
+  }, [] );
 
 
   // handler for approving and generating the certificate

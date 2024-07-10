@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import PrimaryButton from '../components/commons/PrimaryButton';
 import LoadingIndicator from '../components/commons/LoadingIndicator';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestCertificate } from '../store/certificateSlice';
+import { requestCertificate } from '../store/certificateActions';
 
 
 const CertificateRequestForm = () => {
   const dispatch = useDispatch();
   const isRequesting = useSelector( ( state ) => state.certificate.isRequesting );
-  const [name, setName] = useState( '' );
-  const [course, setCourse] = useState( '' );
-  const [email, setEmail] = useState( '' );
+  const [certificateData, setCertificateData] = useState( {
+    name: '',
+    course: '',
+    email: '',
+  } );
   const [errors, setErrors] = useState( {} );
+  const { name, course, email } = certificateData;
 
   const handleSubmit = async ( e ) => {
     e.preventDefault();
@@ -20,11 +23,17 @@ const CertificateRequestForm = () => {
       setErrors( errors );
       return;
     }
-    dispatch( requestCertificate( { name, course, email } ) );
-    setName( '' );
-    setCourse( '' );
-    setEmail( '' );
+    dispatch( requestCertificate( certificateData ) );
+    setCertificateData( {
+      name: '',
+      course: '',
+      email: '',
+    } );
     setErrors( {} );
+  };
+
+  const handleUpdateValue = ( key, value ) => {
+    setCertificateData( prevState => ( { ...prevState, [key]: value } ) );
   };
 
   // handler for error validation
@@ -89,7 +98,7 @@ const CertificateRequestForm = () => {
             { errors.email && <p className='text-red-500 text-sm -mt-4 mb-4'>{ errors.email }</p> }
           </div>
 
-          <PrimaryButton isRequesting={ isRequesting } title={ isRequesting ? 'Sending Request...' : 'Get Certificate' } />
+          <PrimaryButton isLoading={ isRequesting } title={ isRequesting ? 'Sending Request...' : 'Get Certificate' } />
 
         </fieldset>
 
