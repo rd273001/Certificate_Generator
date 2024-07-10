@@ -96,7 +96,7 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     };
 
     // Upload the certificate PDF to Google Drive
-    const file = drive.files.create( {
+    const file = await drive.files.create( {
       requestBody: fileMetadata,
       media: media,
       fields: 'id'
@@ -105,16 +105,14 @@ exports.generateCertificate = async ( name, course, approvalDate ) => {
     // Get the link to the uploaded file
     const certificateLink = `https://drive.google.com/file/d/${ file.data.id }/view`;
 
-    // Cleanup: Delete the temporary PDF file
-    fs.unlinkSync( tempFilePath );
-
     return certificateLink;
   } catch ( error ) {
-    // console.error( 'Error generating certificate:', error );
-    // Cleanup in case of an error
+    throw error;
+  }
+  finally {
+    // Cleanup: Delete the temporary PDF file
     if ( fs.existsSync( tempFilePath ) ) {
       fs.unlinkSync( tempFilePath );
     }
-    throw error;
   }
 };

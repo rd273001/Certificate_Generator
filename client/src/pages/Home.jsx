@@ -24,6 +24,7 @@ const CertificateRequestForm = () => {
       return;
     }
     dispatch( requestCertificate( certificateData ) );
+    // clear data after Certificate form submission
     setCertificateData( {
       name: '',
       course: '',
@@ -66,7 +67,7 @@ const CertificateRequestForm = () => {
               type='text'
               id='name'
               value={ name }
-              onChange={ ( e ) => setName( e.target.value ) }
+              onChange={ ( e ) => handleUpdateValue( 'name', e.target.value ) }
               className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
             />
             { errors.name && <p className='text-red-500 text-sm -mt-4 mb-4'>{ errors.name }</p> }
@@ -79,7 +80,7 @@ const CertificateRequestForm = () => {
               type='text'
               id='course'
               value={ course }
-              onChange={ ( e ) => setCourse( e.target.value ) }
+              onChange={ ( e ) => handleUpdateValue( 'course', e.target.value ) }
               className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
             />
             { errors.course && <p className='text-red-500 text-sm -mt-4 mb-4'>{ errors.course }</p> }
@@ -92,7 +93,7 @@ const CertificateRequestForm = () => {
               type='email'
               id='email'
               value={ email }
-              onChange={ ( e ) => setEmail( e.target.value ) }
+              onChange={ ( e ) => handleUpdateValue( 'email', e.target.value ) }
               className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
             />
             { errors.email && <p className='text-red-500 text-sm -mt-4 mb-4'>{ errors.email }</p> }
