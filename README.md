@@ -1,8 +1,10 @@
 # Certificate Generator
 
-## Overview
-
 Certificate Generator is a web application designed to automate the process of generating and managing certificates for various courses. The application allows users to request certificates, which can then be approved and generated in PDF format. The generated certificates are stored on Google Drive and can be accessed via a link.
+
+## Live Demo
+
+Check out the live website : [Certificate Generator](https://certificate-generator1.netlify.app)
 
 ## Features
 
@@ -45,10 +47,6 @@ Certificate Generator is a web application designed to automate the process of g
 - **Google APIs**: Node.js client library for using Google APIs.
 - **Google Drive API**: Integration with Google Drive for storing PDFs.
 - **PDF-Lib**: Library for creating and modifying PDF documents.
-
-## Live Demo
-
-Check out the live website at: [Certificate Generator](https://certificate-generator1.netlify.app)
 
 ## Setup Instructions
 
@@ -138,4 +136,4 @@ Feel free to contribute to the Repo:
 5. Open a Pull Request.
 <br/><br/>
 
-## Please Star⭐=>🌟 the Repo if you like the Code, UI, anything about the Project
+## Please Star⭐=>🌟 the Repo if you like the Code, UI, or anything about the Project
